@@ -64,8 +64,8 @@
         <div class="section-nav">
           <div class="section-name"><p>Watchlist</p></div>
           <div class="section-date">
-            <p>20 December 2024</p>
-            <p>8:34 am</p>
+            <p><%= currentDate %></p>
+            <p><%= currentTime %></p>
           </div>
         </div>
         <div class="section1-main">
@@ -86,41 +86,20 @@
         <div class="section-nav">
           <div class="section-name"><p>News</p></div>
           <div class="section-date">
-            <p>20 December 2024</p>
-            <p>8:34 am</p>
+            <p><%= currentDate %></p>
+            <p><%= currentTime %></p>
           </div>
         </div>
 
         <div class="section2-main">
-          <div class="section2-news-container">
-            <div class="section2-news-item">
-              <h3>Title</h3>
-              <p>
-                Sure! Could you clarify the topic or theme you'd like the
-                paragraph to focus on? For example, should it be about the stock
-                market, technology, a description of your app, or something
-                else? Let me know so I can craft the perfect paragraph for you!
-              </p>
-            </div>
-            <div class="section2-news-item">
-              <h3>Title</h3>
-              <p>
-                Sure! Could you clarify the topic or theme you'd like the
-                paragraph to focus on? For example, should it be about the stock
-                market, technology, a description of your app, or something
-                else? Let me know so I can craft the perfect paragraph for you!
-              </p>
-            </div>
-            <div class="section2-news-item">
-              <h3>Title</h3>
-              <p>
-                Sure! Could you clarify the topic or theme you'd like the
-                paragraph to focus on? For example, should it be about the stock
-                market, technology, a description of your app, or something
-                else? Let me know so I can craft the perfect paragraph for you!
-              </p>
-            </div>
+          <% if(locals.news){ %> <%news.forEach((item)=>{ %>
+          <div class="section2-news-item">
+            <img src="<%=item.image%>" alt="<%= item.title%>" />
+            <h3><%= item.title%></h3>
+            <p><%=item.summary%></p>
+            <a href="<%=item.url %>">See more</a>
           </div>
+          <%}); %> <% } %>
 
           <div class="section2-buttons">
             <button class="previous-button"><</button>
@@ -132,8 +111,8 @@
         <div class="section-nav">
           <div class="section-name"><p>Portfolio</p></div>
           <div class="section-date">
-            <p>20 December 2024</p>
-            <p>8:34 am</p>
+            <p><%= currentDate %></p>
+            <p><%= currentTime %></p>
           </div>
         </div>
       </div>
