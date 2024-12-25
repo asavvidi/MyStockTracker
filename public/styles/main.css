@@ -38,6 +38,13 @@ body {
   font-family: DejaVu Sans Mono, monospace;
 }
 
+.main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 5rem 10%;
+}
+
 .main-container1 {
   display: flex;
   flex-direction: row;
@@ -46,9 +53,8 @@ body {
 }
 
 .real-time-stocks-container {
-  flex: 1;
-  max-width: 50%;
-  height: 20rem;
+  max-width: 100%;
+  height: auto;
   border: 2px solid #d9d9d9;
   display: flex;
   flex-direction: column;
@@ -62,14 +68,11 @@ body {
   font-weight: bold; /* Titles stand out */
   text-align: left;
 }
-.stock-name {
+.stock-date {
   flex: 1;
   max-width: 20%;
   padding: 10px 0px 0px 10px;
   border-right: 2px solid #d9d9d9;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .stock-price {
@@ -92,7 +95,7 @@ body {
   padding: 10px 0px 0px 10px;
   border-right: 2px solid #d9d9d9;
 }
-.stock-name:hover {
+.stock-date:hover {
   text-overflow: clip;
   white-space: normal;
   background-color: #f5f5f5;
@@ -113,8 +116,7 @@ body {
   font-size: 0.8rem;
 }
 .line-chart-container {
-  flex: 2;
-  max-width: 50%;
+  max-width: 100%;
   height: 20rem;
   border: 2px solid #d9d9d9;
 }
@@ -173,18 +175,20 @@ body {
   flex-direction: column;
   padding: 0.5rem 1rem;
   max-height: 85%;
-  overflow-y: auto;
   gap: 2rem;
 }
 .section2-news-container {
   display: flex;
   gap: 2rem;
   transition: transform 0.5s ease-in-out;
+  overflow-y: auto;
 }
 .section2-news-item {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 300px;
+  flex: 0 0 auto;
 }
 .section2-news-item > h3 {
   border-bottom: 2px solid #d9d9d9;
