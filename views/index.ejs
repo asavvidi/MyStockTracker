@@ -19,7 +19,9 @@
 
     <div class="main-container">
       <h1>STOCK: <%=stockName %></h1>
-      <div class="line-chart-container"></div>
+      <div class="line-chart-container">
+        <canvas class="myFirstChart"></canvas>
+      </div>
 
       <div class="real-time-stocks-container">
         <div class="real-time-stocks-titles">
@@ -47,29 +49,7 @@
     </div>
 
     <div class="main-container2">
-      <div class="section num1">
-        <div class="section-nav">
-          <div class="section-name"><p>Watchlist</p></div>
-          <div class="section-date">
-            <p><%= currentDate %></p>
-            <p><%= currentTime %></p>
-          </div>
-        </div>
-        <div class="section1-main">
-          <div class="section1-stocks">
-            <div class="section1-stocks-name">
-              <h3>A</h3>
-              <p>Agilent Technologies, Inc.</p>
-            </div>
-            <div class="section1-stocks-price">
-              <h3>137.67$</h3>
-              <p>-0.18%</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section num2">
+      <div class="news-container">
         <div class="section-nav">
           <div class="section-name"><p>News</p></div>
           <div class="section-date">
@@ -77,35 +57,30 @@
             <p><%= currentTime %></p>
           </div>
         </div>
+        <div class="section-main">
+          <% if(locals.news){ %> <%news.forEach((item)=>{%>
 
-        <div class="section2-main">
-          <div class="section2-news-container">
-            <% if(locals.news){ %> <%news.forEach((item)=>{ %>
-            <div class="section2-news-item">
+          <div class="section-news-container">
+            <div class="section-news-item">
               <img src="<%=item.image%>" alt="<%= item.title%>" />
               <h3><%= item.title%></h3>
               <p><%=item.summary%></p>
+            </div>
+            <div class="section-news-item-source">
               <a href="<%=item.url %>">See more</a>
             </div>
-            <%}); %> <% } %>
           </div>
 
-          <div class="section2-buttons">
-            <button class="previous-button"><</button>
-            <button class="next-button">></button>
-          </div>
-        </div>
-      </div>
-      <div class="section num3">
-        <div class="section-nav">
-          <div class="section-name"><p>Portfolio</p></div>
-          <div class="section-date">
-            <p><%= currentDate %></p>
-            <p><%= currentTime %></p>
-          </div>
+          <%})%> <%} %>
         </div>
       </div>
     </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"
+      integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script src="/src/script.js"></script>
   </body>
 </html>

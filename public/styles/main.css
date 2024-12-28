@@ -117,24 +117,23 @@ body {
 }
 .line-chart-container {
   max-width: 100%;
-  height: 20rem;
+  height: 30rem;
   border: 2px solid #d9d9d9;
 }
 
 .main-container2 {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 2rem;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 5%;
 }
-
-.section {
-  width: 30%;
+.news-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  height: auto;
   border: 2px solid #d9d9d9;
-  height: 30rem;
 }
-
 .section-nav {
   display: flex;
   flex-direction: row;
@@ -153,76 +152,51 @@ body {
   text-align: right;
 }
 
-.section1-main {
-  display: flex;
-  flex-direction: column;
-}
-
-.section1-stocks {
+.section-main {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
-  border-bottom: 2px solid #d9d9d9;
+  padding: 2rem 5rem;
+  max-height: auto;
+  gap: 2rem;
 }
-
-.section1-stocks-price {
-  text-align: right;
-}
-
-.section2-main {
+.section-news-container {
   display: flex;
   flex-direction: column;
-  padding: 0.5rem 1rem;
-  max-height: 85%;
-  gap: 2rem;
-}
-.section2-news-container {
-  display: flex;
-  gap: 2rem;
-  transition: transform 0.5s ease-in-out;
+  align-items: center;
+  justify-content: space-between;
   overflow-y: auto;
+  border: 2px solid #d9d9d9;
+  padding: 1rem 1rem;
 }
-.section2-news-item {
+.section-news-item {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   width: 300px;
-  flex: 0 0 auto;
 }
-.section2-news-item > h3 {
+.section-news-item > h3 {
   border-bottom: 2px solid #d9d9d9;
+  border-top: 2px solid #d9d9d9;
 }
-.section2-news-item > p {
+.section-news-item > p {
   text-align: justify;
 }
+.section-news-item > img {
+  width: 300px;
+  height: 150px;
+}
 
-.section2-news-item > a {
-  text-decoration: none;
+.section-news-item-source {
   text-align: right;
+  width: 100%;
+}
+.section-news-item-source > a {
+  text-decoration: none;
   margin-top: 10px;
 }
-
-.section2-news-item > img {
-  width: 300px;
-  height: auto;
-}
-
-.section2-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.section2-buttons > button {
-  border: none;
-  cursor: pointer;
-  background-color: rgba(245, 245, 245, 1);
-  padding: 0.5rem 0.5rem;
-  font-size: 1rem;
-  border-radius: 2rem;
-  border: 1px solid #d9d9d9;
-  justify-content: center;
-  align-items: center;
+.myFirstChart {
+  width: 100%;
+  height: 300px;
 }

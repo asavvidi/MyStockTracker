@@ -1,44 +1,42 @@
-const prev = document.querySelector(".previous-button");
-const next = document.querySelector(".next-button");
 const carousel = document.querySelector(".section2-news-container");
 const floatChange = document.querySelector(".stock-change");
 const percentageChange = document.querySelector(".stock-change-percentage");
+const myFirstChart = document.querySelector(".myFirstChart");
 
-let currentIndex = 0;
-const newsItems = carousel.children;
-const totalItems = newsItems.length;
+document.addEventListener("DOMContentLoaded", (event) => {
+  const floatChangeElements = document.querySelectorAll(".stock-change");
+  const percentageChangeElements = document.querySelectorAll(
+    ".stock-change-percentage"
+  );
 
-const itemWidth = newsItems[0].offsetWidth + 32;
+  floatChangeElements.forEach((floatChange, index) => {
+    if (index === 0) {
+      return;
+    }
 
-const updateCarousel = () => {
-  //The offset is neagtive because the transform=translateX() property shifts the elements along the horizontal axis, and negative values move elements to the left
-  //currentIndex is the current index of the the active element news in the carousel.
-  //itemWidth is the total width of each news element
-  const offset = -(currentIndex * itemWidth);
-  carousel.style.transform = `translateX(${offset}px)`;
-};
+    const item = parseFloat(floatChange.textContent.trim());
 
-prev.addEventListener("click", () => {
-  if (currentIndex > 0) {
-    currentIndex--;
-    updateCarousel();
-  }
-  console.log("geiaa");
-});
+    if (item > 0) {
+      floatChange.style.background = "green ";
+      floatChange.style.color = "white";
+    } else {
+      floatChange.style.background = "red";
+      floatChange.style.color = "white";
+    }
+  });
 
-next.addEventListener("click", () => {
-  if (currentIndex < totalItems - 1) {
-    currentIndex++;
-    updateCarousel();
-  }
-});
+  percentageChangeElements.forEach((percentageChange, index) => {
+    if (index === 0) {
+      return;
+    }
+    const item = parseFloat(percentageChange.textContent.trim());
 
-const floatChangeElements = document.querySelectorAll(".stock-change");
-
-floatChangeElements.forEach((item) => {
-  const item = parseFloat(floatChange.textContent);
-
-  if (item > 0) {
-    floatChange.style.background = "green";
-  }
+    if (item > 0) {
+      percentageChange.style.backgroundColor = "green";
+      percentageChange.style.color = "white";
+    } else {
+      percentageChange.style.backgroundColor = "red";
+      percentageChange.style.color = "white";
+    }
+  });
 });

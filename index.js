@@ -61,7 +61,7 @@ app.get("/", async (req, res) => {
       close: price["4. close"],
     }));
 
-    const myStockPrices = stockPrices.slice(0, 10);
+    const myStockPrices = stockPrices.slice(0, 20);
 
     const stockDetails = myStockPrices.map((item) => {
       const high = parseFloat(item.high);
@@ -85,6 +85,8 @@ app.get("/", async (req, res) => {
 
     console.log(stockDetails);
 
+    // console.log(stockDetails);
+
     const news = newsResponse.data.feed;
 
     const myNews = news.map((item) => {
@@ -95,10 +97,21 @@ app.get("/", async (req, res) => {
         image: item.banner_image,
       };
     });
+
+    let newsData = [];
+    let usedNumber = [];
+    while (newsData.length < 6) {
+      let randomNumber = Math.trunc(Math.random() * myNews.length);
+      if (!usedNumber.includes(randomNumber)) {
+        usedNumber.push(randomNumber);
+        newsData.push(myNews[randomNumber]);
+      }
+    }
+
     res.render("index.ejs", {
       currentDate: localDate,
       currentTime: time,
-      news: myNews,
+      news: newsData,
       stockName: stockName,
       stockDetails: stockDetails,
     });
