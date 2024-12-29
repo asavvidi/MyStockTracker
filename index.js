@@ -2,7 +2,6 @@ import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import axios from "axios";
-import e from "express";
 
 dotenv.config();
 
@@ -13,103 +12,124 @@ const API_KEY = process.env.API_KEY;
 
 app.use(express.static("public"));
 
-app.get("/", async (req, res) => {
-  //Get the current date in day week year format
-  const localDate = new Date()
-    .toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    })
-    .replace(/ /g, " ");
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  //Get the current time in hour:minute format
-  const time = new Date().toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
+const getLocalDateAndTime = () => {
+  const localDate = new Date();
+  return {
+    date: localDate
+      .toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+      .replace(/ /g, " "),
+
+    time: localDate.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+  };
+};
+
+async function fetchStockDetails(stockName) {
+  //A function to retrieve stock data from Alpha Vantage Api.
+  //Fetch news data from ALPHA VANTAGE API
+  const stockResponse = await axios.get("https://www.alphavantage.co/query", {
+    params: {
+      function: "TIME_SERIES_DAILY",
+      symbol: `${stockName}`,
+      apikey: API_KEY,
+    },
   });
-  try {
-    //Fetch news data from ALPHA VANTAGE API
-    const newsResponse = await axios.get("https://www.alphavantage.co/query", {
-      params: {
-        function: "NEWS_SENTIMENT",
-        topics: "financial_markets",
-        limit: 20,
-        apikey: API_KEY,
-      },
-    });
 
-    const stockResponse = await axios.get("https://www.alphavantage.co/query", {
-      params: {
-        function: "TIME_SERIES_DAILY",
-        symbol: "IBM",
-        apikey: API_KEY,
-      },
-    });
+  const stock = stockResponse.data;
+  const dailyStock = stock["Time Series (Daily)"];
 
-    const stock = stockResponse.data;
+  const stockPrices = Object.entries(dailyStock).map(([date, price]) => ({
+    date,
+    open: price["1. open"],
+    high: price["2. high"],
+    low: price["3. low"],
+    close: price["4. close"],
+  }));
+  const myStockPrices = stockPrices.slice(0, 20);
 
-    const dailyStock = stock["Time Series (Daily)"];
+  return myStockPrices.map((item) => {
+    const high = parseFloat(item.high);
+    const low = parseFloat(item.low);
 
-    const stockName = stock["Meta Data"]["2. Symbol"];
+    const open = parseFloat(item.open);
+    const close = parseFloat(item.close);
 
-    const stockPrices = Object.entries(dailyStock).map(([date, price]) => ({
-      date,
-      open: price["1. open"],
-      high: price["2. high"],
-      low: price["3. low"],
-      close: price["4. close"],
-    }));
+    const floatDifference = close - open;
+    const percentageDifference = ((close - open) / open) * 100;
 
-    const myStockPrices = stockPrices.slice(0, 20);
+    return {
+      date: item.date,
+      high: high,
+      low: low,
+      close: close,
+      open: open,
+      floatDifference: floatDifference.toFixed(2),
+      percentageDifference: percentageDifference.toFixed(2),
+    };
+  });
+}
 
-    const stockDetails = myStockPrices.map((item) => {
-      const high = parseFloat(item.high);
-      const low = parseFloat(item.low);
-      const open = parseFloat(item.open);
-      const close = parseFloat(item.close);
+async function fetchStockNews() {
+  //A function to retrieve stock news data from Alpha Vantage Api.
+  //Fetch news data from ALPHA VANTAGE API
+  const newsResponse = await axios.get("https://www.alphavantage.co/query", {
+    params: {
+      function: "NEWS_SENTIMENT",
+      topics: "financial_markets",
+      limit: 20,
+      apikey: API_KEY,
+    },
+  });
 
-      const floatDifference = close - open;
-      const percentageDifference = ((close - open) / open) * 100;
+  const news = newsResponse.data.feed;
+  const myNews = news.map((item) => {
+    return {
+      title: item.title,
+      summary: item.summary,
+      url: item.url,
+      image: item.banner_image,
+    };
+  });
+  return myNews;
+}
 
-      return {
-        date: item.date,
-        open: item.open,
-        high: item.high,
-        low: item.low,
-        close: item.close,
-        floatDifference: floatDifference.toFixed(2),
-        percentageDifference: percentageDifference.toFixed(2),
-      };
-    });
-
-    console.log(stockDetails);
-
-    // console.log(stockDetails);
-
-    const news = newsResponse.data.feed;
-
-    const myNews = news.map((item) => {
-      return {
-        title: item.title,
-        summary: item.summary,
-        url: item.url,
-        image: item.banner_image,
-      };
-    });
-
-    let newsData = [];
-    let usedNumber = [];
-    while (newsData.length < 6) {
-      let randomNumber = Math.trunc(Math.random() * myNews.length);
-      if (!usedNumber.includes(randomNumber)) {
-        usedNumber.push(randomNumber);
-        newsData.push(myNews[randomNumber]);
-      }
+const getRandomNews = (news, count) => {
+  //A function to retrieve a particular number of random data news.
+  let newsData = [];
+  let hasRandomNumber = [];
+  while (newsData.length < count) {
+    let randomNumber = Math.trunc(Math.random() * news.length);
+    if (!hasRandomNumber.includes(randomNumber)) {
+      hasRandomNumber.push(randomNumber);
+      newsData.push(news[randomNumber]);
     }
+  }
+  return newsData;
+};
+
+app.get("/", async (req, res) => {
+  try {
+    const stockName = "IBM";
+    const [stockDetails, stockNews] = await Promise.all([
+      fetchStockDetails(stockName),
+      fetchStockNews(),
+    ]);
+
+    //Fetch only 6 random news from Alpha Vantage API.
+    const newsData = getRandomNews(stockNews, 6);
+
+    const { date, time } = getLocalDateAndTime();
 
     res.render("index.ejs", {
-      currentDate: localDate,
+      currentDate: date,
       currentTime: time,
       news: newsData,
       stockName: stockName,
@@ -121,6 +141,30 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.get("/stocks/search", async (req, res) => {
+  const stockName = req.query.inputStock;
+  try {
+    const stockName = req.query.inputStock;
+    const [stockDetails, stockNews] = await Promise.all([
+      fetchStockDetails(stockName),
+      fetchStockNews(),
+    ]);
+    //Fetch only 6 random news from Alpha Vantage API.
+    const newsData = getRandomNews(stockNews, 6);
+    const { date, time } = getLocalDateAndTime();
+
+    res.render("index.ejs", {
+      currentDate: date,
+      currentTime: time,
+      news: newsData,
+      stockName: stockName,
+      stockDetails: stockDetails,
+    });
+  } catch (error) {
+    console.log(`Error fetching data from Alpha Vantage:`, error);
+    res.status(500).send("Error fetching data");
+  }
+});
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
