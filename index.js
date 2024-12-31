@@ -126,6 +126,8 @@ app.get("/", async (req, res) => {
     //Fetch only 6 random news from Alpha Vantage API.
     const newsData = getRandomNews(stockNews, 6);
 
+    console.log(stockDetails);
+    console.log(newsData);
     const { date, time } = getLocalDateAndTime();
 
     res.render("index.ejs", {
@@ -165,6 +167,19 @@ app.get("/stocks/search", async (req, res) => {
     res.status(500).send("Error fetching data");
   }
 });
+
+//Expose a endpoint only to serve JSON data ton the client-side
+app.get("/api/stock", async (req, res) => {
+  try {
+    const stockName = req.query.inputStock || "IBM";
+    const stockDetails = await fetchStockDetails(stockName);
+    res.json(stockDetails);
+  } catch (error) {
+    console.log(`Error fetching stock data:`, error);
+    res.status(500).json({ error: `Failed to fetch stock data` });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
