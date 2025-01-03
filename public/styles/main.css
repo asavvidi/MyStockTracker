@@ -24,9 +24,16 @@ body {
   display: flex;
   flex-direction: row;
   padding: 0rem 1rem;
-
+  gap: 1rem;
   align-items: center;
   justify-content: center;
+}
+
+.nav-container > form > button {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 2px solid #d9d9d9;
+  font-family: DejaVu Sans Mono, monospace;
 }
 
 .nav-container > form > input[type="text"] {
@@ -181,9 +188,29 @@ body {
 .section-news-item > h3 {
   border-bottom: 2px solid #d9d9d9;
   border-top: 2px solid #d9d9d9;
+  text-align: justify;
+  height: 75px;
+
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.section-news-item > h3:hover {
+  height: auto;
+  overflow: visible;
+  background-color: #f5f5f5;
 }
 .section-news-item > p {
   text-align: justify;
+  height: 150px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.section-news-item > p:hover {
+  height: auto;
+  overflow: visible;
+  background-color: #f5f5f5;
 }
 .section-news-item > img {
   width: 300px;

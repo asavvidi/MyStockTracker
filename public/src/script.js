@@ -3,7 +3,7 @@ const floatChange = document.querySelector(".stock-change");
 const percentageChange = document.querySelector(".stock-change-percentage");
 const myFirstChart = document.querySelector(".myFirstChart");
 
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
   const floatChangeElements = document.querySelectorAll(".stock-change");
   const percentageChangeElements = document.querySelectorAll(
     ".stock-change-percentage"
@@ -44,8 +44,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 document.addEventListener("DOMContentLoaded", () => {
   async function fetchStockDetails() {
     try {
-      const response = await fetch(`/api/stock`);
+      const response = await fetch(`/stocks/search`);
       const data = await response.json();
+
       return data;
     } catch (error) {
       console.error("Error fetching stock details:", error);
@@ -57,11 +58,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!stockDetails) return;
 
     // Extract data for the chart
-    const labels = stockDetails.map((item) => item.date).reverse(); // Dates
-    const openPrices = stockDetails.map((item) => item.open).reverse(); // Open Prices
-    const closePrices = stockDetails.map((item) => item.close).reverse(); // Close Prices
+    const labels = stockDetails.map((item) => item.date).reverse();
+    const openPrices = stockDetails.map((item) => item.open).reverse();
+    const closePrices = stockDetails.map((item) => item.close).reverse();
 
-    // Get the canvas for the chart
     const ctx = document.querySelector(".myFirstChart").getContext("2d");
 
     new Chart(ctx, {

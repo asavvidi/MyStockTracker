@@ -126,8 +126,8 @@ app.get("/", async (req, res) => {
     //Fetch only 6 random news from Alpha Vantage API.
     const newsData = getRandomNews(stockNews, 6);
 
-    console.log(stockDetails);
-    console.log(newsData);
+    //console.log(stockDetails);
+    //console.log(newsData);
     const { date, time } = getLocalDateAndTime();
 
     res.render("index.ejs", {
@@ -143,10 +143,11 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/stocks/search", async (req, res) => {
-  const stockName = req.query.inputStock;
+//Route handler to render the EJS page with input stock details
+app.post("/stocks/search", async (req, res) => {
+  const stockName = req.body.inputStock;
+  console.log(req.body);
   try {
-    const stockName = req.query.inputStock;
     const [stockDetails, stockNews] = await Promise.all([
       fetchStockDetails(stockName),
       fetchStockNews(),
@@ -168,10 +169,26 @@ app.get("/stocks/search", async (req, res) => {
   }
 });
 
+//Route handler to return the stock data and send them to client-side for chart creation
+app.get("/stocks/search", async (req, res) => {
+  try {
+    console.log(req.query.inputStock);
+    const inputStock = req.query.inputStock || "IBM";
+    console.log(inputStock);
+    const stockDetails = await fetchStockDetails(inputStock);
+    res.json(stockDetails);
+  } catch (error) {
+    console.log(`Error fetching stock data:`, error);
+    res.status(500).json({ error: `Error fetching stock data` });
+  }
+});
 //Expose a endpoint only to serve JSON data ton the client-side
+//Route handler to provide JSON data.
 app.get("/api/stock", async (req, res) => {
   try {
+    console.log(req.query.inputStock);
     const stockName = req.query.inputStock || "IBM";
+    console.log(stockName);
     const stockDetails = await fetchStockDetails(stockName);
     res.json(stockDetails);
   } catch (error) {
