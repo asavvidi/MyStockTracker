@@ -1,6 +1,5 @@
-import express from "express";
-import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import express from "express";
 import axios from "axios";
 
 dotenv.config();
@@ -8,11 +7,12 @@ dotenv.config();
 const app = express();
 const port = 3000;
 
-const API_KEY = process.env.API_KEY;
+const API_KEY1 = process.env.API_KEY1;
+const API_KEY2 = process.env.API_KEY2;
 
 app.use(express.static("public"));
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 const getLocalDateAndTime = () => {
   const localDate = new Date();
@@ -39,7 +39,7 @@ async function fetchStockDetails(stockName) {
     params: {
       function: "TIME_SERIES_DAILY",
       symbol: `${stockName}`,
-      apikey: API_KEY,
+      apikey: API_KEY1,
     },
   });
 
@@ -85,7 +85,7 @@ async function fetchStockNews() {
       function: "NEWS_SENTIMENT",
       topics: "financial_markets",
       limit: 20,
-      apikey: API_KEY,
+      apikey: API_KEY2,
     },
   });
 
@@ -166,34 +166,6 @@ app.post("/stocks/search", async (req, res) => {
   } catch (error) {
     console.log(`Error fetching data from Alpha Vantage:`, error);
     res.status(500).send("Error fetching data");
-  }
-});
-
-//Route handler to return the stock data and send them to client-side for chart creation
-app.get("/stocks/search", async (req, res) => {
-  try {
-    console.log(req.query.inputStock);
-    const inputStock = req.query.inputStock || "IBM";
-    console.log(inputStock);
-    const stockDetails = await fetchStockDetails(inputStock);
-    res.json(stockDetails);
-  } catch (error) {
-    console.log(`Error fetching stock data:`, error);
-    res.status(500).json({ error: `Error fetching stock data` });
-  }
-});
-//Expose a endpoint only to serve JSON data ton the client-side
-//Route handler to provide JSON data.
-app.get("/api/stock", async (req, res) => {
-  try {
-    console.log(req.query.inputStock);
-    const stockName = req.query.inputStock || "IBM";
-    console.log(stockName);
-    const stockDetails = await fetchStockDetails(stockName);
-    res.json(stockDetails);
-  } catch (error) {
-    console.log(`Error fetching stock data:`, error);
-    res.status(500).json({ error: `Failed to fetch stock data` });
   }
 });
 
