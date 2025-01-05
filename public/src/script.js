@@ -68,14 +68,14 @@ function createChart(stockDetails) {
         {
           label: "Open Price",
           data: openPrices,
-          borderColor: "rgba(75, 192, 192, 1)",
+          borderColor: "rgba(255, 99, 132, 1)",
           borderWidth: 2,
           fill: false,
         },
         {
           label: "Close Price",
           data: closePrices,
-          borderColor: "rgba(255, 99, 132, 1)",
+          borderColor: "rgba(75, 192, 192, 1)",
           borderWidth: 2,
           fill: false,
         },
@@ -83,6 +83,7 @@ function createChart(stockDetails) {
     },
     options: {
       responsive: false,
+
       scales: {
         x: { title: { display: true, text: "Date" } },
         y: { title: { display: true, text: "Price (USD)" } },

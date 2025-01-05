@@ -5,10 +5,11 @@ import axios from "axios";
 dotenv.config();
 
 const app = express();
-const port = 3000;
 
-const API_KEY1 = process.env.API_KEY1;
-const API_KEY2 = process.env.API_KEY2;
+const port = process.env.PORT;
+
+const API_STOCK = process.env.API_STOCK;
+const API_NEWS = process.env.API_NEWS;
 
 app.use(express.static("public"));
 
@@ -39,7 +40,7 @@ async function fetchStockDetails(stockName) {
     params: {
       function: "TIME_SERIES_DAILY",
       symbol: `${stockName}`,
-      apikey: API_KEY1,
+      apikey: API_STOCK,
     },
   });
 
@@ -85,7 +86,7 @@ async function fetchStockNews() {
       function: "NEWS_SENTIMENT",
       topics: "financial_markets",
       limit: 20,
-      apikey: API_KEY2,
+      apikey: API_NEWS,
     },
   });
 
