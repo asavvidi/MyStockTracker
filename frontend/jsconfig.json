@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "#config/*": ["./config/*"],
+      "#routes/*": ["./routes/*"],
+      "#controllers/*": ["./controllers/*"],
+      "#utils/*": ["./utils/*"]
+    }
+  }
+}

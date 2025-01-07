@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/main.css" />
+    <title>My Stock Market Tracker App</title>
+  </head>
+  <body>
+    <div class="nav-container">
+      <form class="formStock" action="/stocks/search" method="POST">
+        <input
+          type="text"
+          placeholder="Search your stocks..."
+          name="inputStock"
+        />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
+    <div class="main-container">
+      <h1>STOCK: IBM</h1>
+      <div class="line-chart-container">
+        <canvas class="myFirstChart"></canvas>
+      </div>
+
+      <div class="real-time-stocks-container">
+        <div class="real-time-stocks-titles">
+          <div class="stock-date">Date</div>
+          <div class="stock-price">Price</div>
+          <div class="stock-change">Change</div>
+          <div class="stock-change-percentage">% Change</div>
+          <div class="stock-days-high-low">Day's High/Low</div>
+        </div>
+
+        <%if(locals.stockDetails){ %> <%stockDetails.forEach((item)=>{ %>
+        <div class="stock">
+          <div class="stock-date"><%=item.date %></div>
+          <div class="stock-price">$ <%=item.close %></div>
+          <div class="stock-change"><%=item.floatDifference %></div>
+          <div class="stock-change-percentage">
+            <%=item.percentageDifference %>%
+          </div>
+          <div class="stock-days-high-low">
+            $ <%=item.high %> / $ <%=item.low %>
+          </div>
+        </div>
+        <%}) %> <% } %>
+      </div>
+    </div>
+
+    <div class="main-container2">
+      <div class="news-container">
+        <div class="section-nav">
+          <div class="section-name"><p>News</p></div>
+          <div class="section-date">
+            <p></p>
+            <p></p>
+          </div>
+        </div>
+        <div class="section-main">
+          <% if(locals.news){ %> <%news.forEach((item)=>{%>
+
+          <div class="section-news-container">
+            <div class="section-news-item">
+              <img src="<%=item.image%>" alt="<%= item.title%>" />
+              <h3><%= item.title%></h3>
+              <p><%=item.summary%></p>
+            </div>
+            <div class="section-news-item-source">
+              <a href="<%=item.url %>">See more</a>
+            </div>
+          </div>
+
+          <%})%> <%} %>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="/src/script.js"></script>
+
+    <script>
+      const stockData = JSON.parse(`<%-JSON.stringify(stockDetails) %>`);
+      document.addEventListener("DOMContentLoaded", () => {
+        createChart(stockData);
+      });
+    </script>
+  </body>
+</html>
