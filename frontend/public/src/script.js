@@ -1,14 +1,16 @@
-const carousel = document.querySelector(".section2-news-container");
-const floatChange = document.querySelector(".stock-change");
-const percentageChange = document.querySelector(".stock-change-percentage");
+const floatChangeElements = document.querySelectorAll(".stock-change");
+const percentageChangeElements = document.querySelectorAll(
+  ".stock-change-percentage"
+);
 const myFirstChart = document.querySelector(".myFirstChart");
+const dateElement = document.getElementById("date");
+const timeElement = document.getElementById("time");
 
 //Set the background color of stock change elements based on stock price difference
 document.addEventListener("DOMContentLoaded", () => {
-  const floatChangeElements = document.querySelectorAll(".stock-change");
-  const percentageChangeElements = document.querySelectorAll(
-    ".stock-change-percentage"
-  );
+  const { date, time } = getLocalDateAndTime();
+  dateElement.textContent = date;
+  timeElement.textContent = time;
 
   floatChangeElements.forEach((floatChange, index) => {
     //We ignore the first element because it is the title for the container
@@ -49,6 +51,27 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+//Function that returns the local date and time
+const getLocalDateAndTime = () => {
+  const localDate = new Date();
+  //Return an object that contains the formatted date and time
+  return {
+    //Format the date in "date month year" format
+    date: localDate
+      .toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+      .replace(/ /g, " "),
+    //Format the time in "hour:minute" format
+    time: localDate.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+  };
+};
+
 //Function to create stock chart with chart.js library
 function createChart(stockDetails) {
   if (!stockDetails) return;
@@ -68,14 +91,14 @@ function createChart(stockDetails) {
         {
           label: "Open Price",
           data: openPrices,
-          borderColor: "rgba(75, 192, 192, 1)",
+          borderColor: "rgba(255, 99, 132, 1)",
           borderWidth: 2,
           fill: false,
         },
         {
           label: "Close Price",
           data: closePrices,
-          borderColor: "rgba(255, 99, 132, 1)",
+          borderColor: "rgba(75, 192, 192, 1)",
           borderWidth: 2,
           fill: false,
         },
@@ -83,6 +106,7 @@ function createChart(stockDetails) {
     },
     options: {
       responsive: false,
+
       scales: {
         x: { title: { display: true, text: "Date" } },
         y: { title: { display: true, text: "Price (USD)" } },

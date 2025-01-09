@@ -8,18 +8,18 @@
   </head>
   <body>
     <div class="nav-container">
-      <form class="formStock" action="/stocks/search" method="POST">
+      <form class="formStock" action="/search" method="post">
         <input
           type="text"
           placeholder="Search your stocks..."
-          name="inputStock"
+          name="stockName"
         />
         <button type="submit">Search</button>
       </form>
     </div>
-
+    <%if(locals.stock){ %>
     <div class="main-container">
-      <h1>STOCK: <%=stockName %></h1>
+      <h1>STOCK: <%=stock.stockName %></h1>
       <div class="line-chart-container">
         <canvas class="myFirstChart"></canvas>
       </div>
@@ -33,7 +33,7 @@
           <div class="stock-days-high-low">Day's High/Low</div>
         </div>
 
-        <%if(locals.stockDetails){ %> <%stockDetails.forEach((item)=>{ %>
+        <%stock.stockDetails.forEach((item)=>{ %>
         <div class="stock">
           <div class="stock-date"><%=item.date %></div>
           <div class="stock-price">$ <%=item.close %></div>
@@ -54,8 +54,8 @@
         <div class="section-nav">
           <div class="section-name"><p>News</p></div>
           <div class="section-date">
-            <p><%= currentDate %></p>
-            <p><%= currentTime %></p>
+            <p id="date"></p>
+            <p id="time"></p>
           </div>
         </div>
         <div class="section-main">
@@ -63,9 +63,11 @@
 
           <div class="section-news-container">
             <div class="section-news-item">
-              <img src="<%=item.image%>" alt="<%= item.title%>" />
+              <img src="<%=item.banner_image%>" alt="<%= item.title%>" />
               <h3><%= item.title%></h3>
-              <p><%=item.summary%></p>
+              <p>
+                <%=item.summary.split(" ").slice(0,20).join(' ').concat('...')%>
+              </p>
             </div>
             <div class="section-news-item-source">
               <a href="<%=item.url %>">See more</a>
@@ -81,7 +83,7 @@
     <script src="/src/script.js"></script>
 
     <script>
-      const stockData = JSON.parse(`<%-JSON.stringify(stockDetails) %>`);
+      const stockData = JSON.parse(`<%-JSON.stringify(stock.stockDetails) %>`);
       document.addEventListener("DOMContentLoaded", () => {
         createChart(stockData);
       });
