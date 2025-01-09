@@ -1,14 +1,16 @@
-const carousel = document.querySelector(".section2-news-container");
-const floatChange = document.querySelector(".stock-change");
-const percentageChange = document.querySelector(".stock-change-percentage");
+const floatChangeElements = document.querySelectorAll(".stock-change");
+const percentageChangeElements = document.querySelectorAll(
+  ".stock-change-percentage"
+);
 const myFirstChart = document.querySelector(".myFirstChart");
+const dateElement = document.getElementById("date");
+const timeElement = document.getElementById("time");
 
 //Set the background color of stock change elements based on stock price difference
 document.addEventListener("DOMContentLoaded", () => {
-  const floatChangeElements = document.querySelectorAll(".stock-change");
-  const percentageChangeElements = document.querySelectorAll(
-    ".stock-change-percentage"
-  );
+  const { date, time } = getLocalDateAndTime();
+  dateElement.textContent = date;
+  timeElement.textContent = time;
 
   floatChangeElements.forEach((floatChange, index) => {
     //We ignore the first element because it is the title for the container
@@ -49,9 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+//Function that returns the local date and time
 const getLocalDateAndTime = () => {
   const localDate = new Date();
+  //Return an object that contains the formatted date and time
   return {
+    //Format the date in "date month year" format
     date: localDate
       .toLocaleDateString("en-GB", {
         day: "numeric",
@@ -59,7 +64,7 @@ const getLocalDateAndTime = () => {
         year: "numeric",
       })
       .replace(/ /g, " "),
-
+    //Format the time in "hour:minute" format
     time: localDate.toLocaleTimeString("en-GB", {
       hour: "2-digit",
       minute: "2-digit",
