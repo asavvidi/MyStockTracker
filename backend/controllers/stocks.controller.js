@@ -6,8 +6,6 @@ const getStock = async (req, res) => {
   //Input the stockName from the request body, if it is null then set the defaul symbol "IBM".
   const { stockName = "IBM" } = req?.body;
 
-  console.log("Received stockName from request body:", req.body);
-
   //Send a GET request to the stock API with the specified stock symbol
   const stockResponse = await api
     .get("/query", STOCKS_PARAMS(stockName))
@@ -30,7 +28,6 @@ const getStock = async (req, res) => {
 
   //Format and process the data using the prepareStockData function
   const stockDetails = prepareStockData(stockData);
-  console.log("HERE", stockDetails);
 
   // Send a successful response with the formatted stock details and the stock name
   res.send({ stockDetails, stockName });

@@ -25,7 +25,7 @@ const getNews = async (req, res) => {
 
   //From the news array data, receive 6 random news objects.
   const news = getRandomNews(newsArray, 6);
-  console.log(news);
+
   // Send a successful response with the randomly picked news.
   res.send(news);
 };

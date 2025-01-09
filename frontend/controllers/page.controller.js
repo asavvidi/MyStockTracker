@@ -15,7 +15,6 @@ const fetchStockData = async (stockName) => {
 
   //Receive the stockData from the response, if they are not null
   const stockData = stockResponse?.data;
-  console.log("Show me the stock data", stockData);
   return stockData;
 };
 
@@ -28,7 +27,6 @@ const fetchNewsData = async () => {
 
   //Receive the news data from the response, if they are not null
   const newsData = newsResponse?.data;
-  // console.log("Is this undefined?", newsData);
   return newsData;
 };
 
@@ -37,23 +35,17 @@ const fetchData = async (req, res) => {
   const stock = await fetchStockData();
   const news = await fetchNewsData();
 
-  //console.log("Here are the news", news);
-  //console.log("Here are the stocks", stockDetails);
-
   // Render the `index.ejs` page with the fetched stock and news data
   res.render("index.ejs", { stock, news });
 };
 
 // Function to handle a request to fetch new stock data and render the page
 const fetchNewData = async (req, res) => {
-  console.log("The new stock name is ", req.body);
   // Extract the stock name from the request body
   const { stockName } = req?.body;
-  console.log(`The stockName is... ${stockName}`);
 
   //Fetch the stock data with the provided stockName and fetch the news
   const stock = await fetchStockData(stockName);
-  console.log("The stock name of the stock is", stock.stockName);
   const news = await fetchNewsData();
   // Render the `index.ejs` page with the updated stock and news data
   res.render("index.ejs", { stock, news });
