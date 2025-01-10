@@ -92,3 +92,17 @@ http://localhost:PORT
 ```
 
 Replace `PORT` with the port number where your frontend server is running (e.g., `3000`).
+
+## Search Stock
+
+To retrieve stock data, enter the **stock symbol** in the input form instead of the company name.
+
+For example:
+
+- To get the latest data for **Apple**, type `AAPL`.
+- For **Nvidia**, type `NVDA`.
+- For **Amazon**, type `AMZN`.
+
+## License
+
+This project is licensed under the MIT License
