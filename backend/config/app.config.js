@@ -1,6 +1,6 @@
 import {} from "dotenv/config";
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT ?? 8080;
 const API_URL = process.env.API_URL;
 const API_NEWS = process.env.API_NEWS;
 const API_STOCK = process.env.API_STOCK;
